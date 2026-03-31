@@ -8,10 +8,23 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
+
+const eliteSmartInventoryDB = client.db("eliteSmartInventory");
+
+const eliteSmartInventoryDBCollections = {
+  usersDbCollection: eliteSmartInventoryDB.collection("users"),
+  categoriesDbCollection: eliteSmartInventoryDB.collection("categories"),
+  productsDbCollection: eliteSmartInventoryDB.collection("products"),
+  ordersDbCollection: eliteSmartInventoryDB.collection("orders"),
+  restockQueueDbCollection: eliteSmartInventoryDB.collection("restockQueue"),
+  activityLogsDbCollection: eliteSmartInventoryDB.collection("activityLogs"),
+};
+
 async function connectDB() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+    console.log("MongoDB Connected");
     // Send a ping to confirm a successful connection
     //console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } catch (error) {
@@ -19,4 +32,4 @@ async function connectDB() {
     process.exit(1);
   }
 }
-module.exports = { connectDB, client };
+module.exports = { connectDB, ...eliteSmartInventoryDBCollections, client };
